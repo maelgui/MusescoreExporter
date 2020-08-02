@@ -1,0 +1,25 @@
+version: "3.7"
+
+services:
+    web:
+        build: .
+        ports:
+            - 5000:5000
+        volumes:
+            - .:/usr/src/app
+        environment:
+            - FLASK_ENV=development
+        depends_on:
+            - redis
+        command: python3 app.py
+    
+    worker:
+        build: .
+        volumes:
+            - .:/usr/src/app
+        depends_on:
+            - redis
+        command: python3 worker.py
+
+    redis:
+        image: redis:latest
